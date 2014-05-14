@@ -2,6 +2,9 @@
 
 namespace DateRepetition;
 
+use DateTime;
+use InvalidArgumentException;
+
 class DailyDateRepetition implements DateRepetition
 {
 	protected $minute;
@@ -15,7 +18,11 @@ class DailyDateRepetition implements DateRepetition
 
 	public static function newFromTimeString($timeString)
 	{
-		$dateTime = new DateTime($timeString);
+        try {
+    		$dateTime = new DateTime($timeString);
+        } catch(\Exception $e) {
+            throw new InvalidArgumentException('Time string must be valid, see DateTime for documentation');
+        }
 		return new self($dateTime->format('G'), $dateTime->format('i'));
 	}
 	
