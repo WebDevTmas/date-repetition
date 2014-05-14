@@ -1,0 +1,19 @@
+{
+	"autoload": {
+		"psr-0": { "DateRepetition": "src" }
+	},
+    "name": "tmas/date-repetition",
+    "description": "Date repetitions, handy for scheduling jobs",
+    "require": {
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "authors": [
+        {
+            "name": "WebDevTmas",
+            "email": "tmas@noemail.com"
+        }
+    ]
+}
+
