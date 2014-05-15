@@ -49,5 +49,21 @@ class DateRepetitionCalculatorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(new DateTime('2014-05-13 8:13'), $nextOccurance);
     }
 
-}
+    /**
+     * @test
+     */
+    public function testNearestOccuranceDaily()
+    {
 
+        $dateRepetition = new DailyDateRepetition(11, 15);
+        $dateRepetitionCalculator = new DateRepetitionCalculator();
+
+        $dateTime = new DateTime('2014-05-14 23:14');
+        $nearestOccurence = $dateRepetitionCalculator->getNearestOccurence($dateRepetition, $dateTime);
+        $this->assertEquals(new DateTime('2014-05-14 11:15'), $nearestOccurence);
+
+        $dateTime = new DateTime('2014-05-13 23:16');
+        $nearestOccurence = $dateRepetitionCalculator->getNearestOccurence($dateRepetition, $dateTime);
+        $this->assertEquals(new DateTime('2014-05-14 11:15'), $nearestOccurence);
+    }
+}

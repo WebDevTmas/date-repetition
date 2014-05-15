@@ -46,8 +46,8 @@ class DateRepetitionCalculator
             $datetime = new DateTime();
         }
 
-        $nextOccurence = $this->getNextOccurenceForDateRepetition($dateRepetition, $datetime);
-        $prevOccurence = $this->getPreviousOccurenceForDateRepetition($dateRepetition, $datetime);
+        $nextOccurence = $this->getNextOccurence($dateRepetition, $datetime);
+        $prevOccurence = $this->getPreviousOccurence($dateRepetition, $datetime);
         $nextTimestamp = $nextOccurence->getTimeStamp();
         $prevTimestamp = $prevOccurence->getTimeStamp();
         $timestamp = $datetime->getTimeStamp();
