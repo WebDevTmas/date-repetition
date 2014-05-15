@@ -5,6 +5,7 @@ spl_autoload_register(function ($class) {
 		'DateRepetition\DailyDateRepetition',
         'DateRepetition\WeeklyDateRepetition',
 		'DateRepetition\DateRepetitionInterpeter',
+        'DateRepetition\DateRepetitionCalculator',
         'DateRepetition\DateRepetition',
 	);
 	if(in_array($class, $availableClasses)) {

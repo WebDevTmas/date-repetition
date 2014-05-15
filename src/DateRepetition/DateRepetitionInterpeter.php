@@ -9,7 +9,7 @@ class DateRepetitionInterpeter
     public static function newDateRepetitionFromString($string)
     {
         $days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
-        $regex = "/^(daily|weekly)( on (" . implode('|', $days) . "))?( at (.*))?$/";
+        $regex = "/^(daily|weekly|monthly|yearly)( on (" . implode('|', $days) . "))?( at (.*))?$/";
         
         $result = preg_match($regex, $string, $timeStringMatches);
         if(1 !== $result) {
@@ -27,6 +27,10 @@ class DateRepetitionInterpeter
         if($repetition === 'weekly' && $day != '') {
             $timeString = trim('this ' . $day . ' ' . $time);
             return WeeklyDateRepetition::newFromTimeString($timeString);
+        }
+
+        if($repetition === 'monthly' || $repetition === 'yearly') {
+            throw new \Exception('Not yet implemented');
         }
 
         throw new InvalidArgumentException('Inalid date repetition string');

@@ -64,17 +64,4 @@ class DailyDateRepetitionTest extends PHPUnit_Framework_TestCase
         $dateRepetition = DailyDateRepetition::newFromTimeString('9:13');
         $dateRepetition->setHour(24);
 	}
-
-    public function testGetCurrentDateTime()
-    {
-        $dateRepetition = DateRepetitionInterpeter::newDateRepetitionFromString('daily at 9:13');
-        $dateTime = $dateRepetition->getCurrentDateTime();
-
-        $this->assertEquals(date('Y'), $dateTime->format('Y'));
-        $this->assertEquals(date('m'), $dateTime->format('m'));
-        $this->assertEquals(date('d'), $dateTime->format('d'));
-
-        $this->assertEquals('9', $dateTime->format('G'));
-        $this->assertEquals('13', $dateTime->format('i'));
-    }    
 }

@@ -54,9 +54,4 @@ class WeeklyDateRepetition extends DailyDateRepetition
     {
         return $this->day;
     }
-
-    public function getCurrentDateTime()
-    {
-        return new DateTime('this ' . $this->day . ' ' . $this->hour . ':' . $this->minute);
-    }
 }

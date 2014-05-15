@@ -51,11 +51,4 @@ class DailyDateRepetition implements DateRepetition
 		}
  		$this->hour = $hour;
  	}
-
-    public function getCurrentDateTime()
-    {
-        $currentDateTime = new DateTime();
-        $currentDateTime->setTime($this->hour, $this->minute);
-        return $currentDateTime;
-    }
 }

@@ -36,17 +36,4 @@ class WeeklyDateRepetitionTest extends PHPUnit_Framework_TestCase
         $dateRepetition = WeeklyDateRepetition::newFromTimeString('this monday 9:13');
         $dateRepetition->setDay('moonday');
 	}
-
-    public function testGetCurrentDateTime()
-    {
-        $dateRepetition = DateRepetitionInterpeter::newDateRepetitionFromString('weekly on monday at 9:13');
-        $dateTime = $dateRepetition->getCurrentDateTime();
-
-        $this->assertEquals(date('Y'), $dateTime->format('Y'));
-        $this->assertEquals(date('m'), $dateTime->format('m'));
-
-        $this->assertEquals('Monday', $dateTime->format('l'));
-        $this->assertEquals('9', $dateTime->format('G'));
-        $this->assertEquals('13', $dateTime->format('i'));
-    }
 }
