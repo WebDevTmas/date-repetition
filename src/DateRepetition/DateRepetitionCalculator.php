@@ -38,7 +38,28 @@ class DateRepetitionCalculator
         }
 
         return new \Exception('Not yet implemented');
-    }
+   }
+
+   public function getNearestOccurence(DateRepetition $dateRepetition, DateTime $datetime = null)
+   {
+        if(null === $datetime) {
+            $datetime = new DateTime();
+        }
+
+        $nextOccurence = $this->getNextOccurenceForDateRepetition($dateRepetition, $datetime);
+        $prevOccurence = $this->getPreviousOccurenceForDateRepetition($dateRepetition, $datetime);
+        $nextTimestamp = $nextOccurence->getTimeStamp();
+        $prevTimestamp = $prevOccurence->getTimeStamp();
+        $timestamp = $datetime->getTimeStamp();
+
+        if(abs($nextTimestamp - $timestamp) > abs($prevTimestamp - $timestamp)) {
+            return $prevOccurence;
+        } else {
+            return $nextOccurence;
+        }
+
+        return new \Exception('Not yet implemented');
+   }
 
     protected function getPreviousOccurenceForDailyDateRepetition(DailyDateRepetition $dateRepetition, DateTime $datetime)
     {
@@ -61,6 +82,7 @@ class DateRepetitionCalculator
         }
         return $repetitionDatetime->modify('+1 day');
     }
+
 
     protected function getPreviousOccurenceForWeeklyDateRepetition(DailyDateRepetition $dateRepetition, DateTime $datetime)
     {
