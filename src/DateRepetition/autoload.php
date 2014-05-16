@@ -7,6 +7,7 @@ spl_autoload_register(function ($class) {
 		'DateRepetition\DateRepetitionInterpeter',
         'DateRepetition\DateRepetitionCalculator',
         'DateRepetition\DateRepetition',
+        'DateRepetition\TimeProvider',
 	);
 	if(in_array($class, $availableClasses)) {
 		require(__DIR__ . '/../' . strtr($class, '\\', '/') . '.php');

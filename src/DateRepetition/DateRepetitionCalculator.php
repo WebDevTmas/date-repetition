@@ -6,10 +6,17 @@ use DateTime;
 
 class DateRepetitionCalculator
 {
+    protected $timeProvider;
+
+    public function __contruct(TimeProvider $timeProvider)
+    {
+        $this->timeProvider = $timeProvider;
+    }
+
     public function getNextOccurence(DateRepetition $dateRepetition, DateTime $datetime = null)
     {
         if(null === $datetime) {
-            $datetime = new DateTime();
+            $datetime = $this->timeProvider->now();
         }
 
         if($dateRepetition instanceof DailyDateRepetition) {
@@ -26,7 +33,7 @@ class DateRepetitionCalculator
     public function getPreviousOccurence(DateRepetition $dateRepetition, DateTime $datetime = null)
     {
         if(null === $datetime) {
-            $datetime = new DateTime();
+            $datetime = $this->timeProvider->now();
         }
 
         if($dateRepetition instanceof DailyDateRepetition) {
@@ -43,7 +50,7 @@ class DateRepetitionCalculator
    public function getNearestOccurence(DateRepetition $dateRepetition, DateTime $datetime = null)
    {
         if(null === $datetime) {
-            $datetime = new DateTime();
+            $datetime = $this->timeProvider->now();
         }
 
         $nextOccurence = $this->getNextOccurence($dateRepetition, $datetime);
