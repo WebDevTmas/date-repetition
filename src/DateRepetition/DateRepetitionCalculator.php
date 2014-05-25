@@ -36,12 +36,13 @@ class DateRepetitionCalculator
             $datetime = $this->timeProvider->now();
         }
 
-        if($dateRepetition instanceof DailyDateRepetition) {
-            return $this->getNextOccurenceForDailyDateRepetition($dateRepetition, $datetime);
-        }
-
-        if($dateRepetition instanceof WeeklyDateRepetition) {
-            return $this->getNextOccurenceForWeeklyDateRepetition($dateRepetition, $datetime);
+        switch(true) {
+            case $dateRepetition instanceof WeeklyDateRepetition:
+                return $this->getNextOccurenceForWeeklyDateRepetition($dateRepetition, $datetime);
+            case $dateRepetition instanceof DailyDateRepetition:
+                return $this->getNextOccurenceForDailyDateRepetition($dateRepetition, $datetime);
+            case $dateRepetition instanceof HourlyDateRepetition:
+                return $this->getNextOccurenceForHourlyDateRepetition($dateRepetition, $datetime);
         }
 
         return new \Exception('Not yet implemented');
@@ -58,12 +59,13 @@ class DateRepetitionCalculator
             $datetime = $this->timeProvider->now();
         }
 
-        if($dateRepetition instanceof DailyDateRepetition) {
-            return $this->getPreviousOccurenceForDailyDateRepetition($dateRepetition, $datetime);
-        }
-
-        if($dateRepetition instanceof WeeklyDateRepetition) {
-            return $this->getPreviousOccurenceForWeeklyDateRepetition($dateRepetition, $datetime);
+        switch(true) {
+            case $dateRepetition instanceof WeeklyDateRepetition:
+                return $this->getPreviousOccurenceForWeeklyDateRepetition($dateRepetition, $datetime);
+            case $dateRepetition instanceof DailyDateRepetition:
+                return $this->getPreviousOccurenceForDailyDateRepetition($dateRepetition, $datetime);
+            case $dateRepetition instanceof HourlyDateRepetition:
+                return $this->getPreviousOccurenceForHourlyDateRepetition($dateRepetition, $datetime);
         }
 
         return new \Exception('Not yet implemented');
@@ -95,6 +97,28 @@ class DateRepetitionCalculator
         return new \Exception('Not yet implemented');
    }
 
+    protected function getPreviousOccurenceForHourlyDateRepetition(HourlyDateRepetition $dateRepetition, DateTime $datetime)
+    {
+        $datetimeString = $datetime->format('Y-m-d H') . ':' . $dateRepetition->getMinute();
+        $repetitionDatetime = new DateTime($datetimeString);
+        if($repetitionDatetime < $datetime)
+        {
+            return $repetitionDatetime;
+        }
+        return $repetitionDatetime->modify('-1 hour');
+    }
+
+    protected function getNextOccurenceForHourlyDateRepetition(HourlyDateRepetition $dateRepetition, DateTime $datetime)
+    {
+        $datetimeString = $datetime->format('Y-m-d H') . ':' . $dateRepetition->getMinute();
+        $repetitionDatetime = new DateTime($datetimeString);
+        if($repetitionDatetime >= $datetime)
+        {
+            return $repetitionDatetime;
+        }
+        return $repetitionDatetime->modify('+1 hour');
+    }
+
     protected function getPreviousOccurenceForDailyDateRepetition(DailyDateRepetition $dateRepetition, DateTime $datetime)
     {
         $datetimeString = $datetime->format('Y-m-d') . ' ' . $dateRepetition->getHour() . ':' . $dateRepetition->getMinute();
@@ -120,23 +144,25 @@ class DateRepetitionCalculator
 
     protected function getPreviousOccurenceForWeeklyDateRepetition(DailyDateRepetition $dateRepetition, DateTime $datetime)
     {
-        $datetimeString = $datetime->format('Y-m-d') . ' ' . $dateRepetition->getHour() . ':' . $dateRepetition->getMinute();
-        $repetitionDatetime = new DateTime($datetimeString);
+        $repetitionDatetime = clone $datetime;
         $repetitionDatetime->modify($dateRepetition->getDay());
-        if($repetitionDatetime < $datetime) {
-            return $repetitionDatetime;
+        $repetitionDatetime->setTime($dateRepetition->getHour(), $dateRepetition->getMinute());
+
+        if($repetitionDatetime >= $datetime) {
+            $repetitionDatetime->modify('-1 week');
         }
-        return $repetitionDatetime->modify('-1 week');
+        return $repetitionDatetime;
     }
 
     protected function getNextOccurenceForWeeklyDateRepetition(DailyDateRepetition $dateRepetition, DateTime $datetime)
     {
-        $datetimeString = $datetime->format('Y-m-d') . ' ' . $dateRepetition->getHour() . ':' . $dateRepetition->getMinute();
-        $repetitionDatetime = new DateTime($datetimeString);
+        $repetitionDatetime = clone $datetime;
         $repetitionDatetime->modify($dateRepetition->getDay());
-        if($repetitionDatetime >= $datetime) {
-            return $repetitionDatetime;
+        $repetitionDatetime->setTime($dateRepetition->getHour(), $dateRepetition->getMinute());
+        if($repetitionDatetime < $datetime) {
+            $repetitionDatetime->modify('+1 week');
         }
-        return $repetitionDatetime->modify('+1 week');
+
+        return $repetitionDatetime; 
     }
 }

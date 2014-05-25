@@ -6,6 +6,17 @@ use PHPUnit_Framework_TestCase;
 
 class DateRepetitionInterpeterTest extends PHPUnit_Framework_TestCase
 {
+
+	/**
+	 * @test
+	 */
+	public function testNewHourlyFromString()
+	{
+        $dateRepetition = DateRepetitionInterpeter::newDateRepetitionFromString('hourly at minute 48');
+        $this->assertTrue($dateRepetition instanceof HourlyDateRepetition);
+        $this->assertEquals(48, $dateRepetition->getMinute());
+	}
+
 	/**
 	 * @test
 	 */
@@ -49,6 +60,10 @@ class DateRepetitionInterpeterTest extends PHPUnit_Framework_TestCase
      */
     public function testConverDateRepetitionToString()
     {
+        $hourly = new HourlyDateRepetition(28);
+        $hourlyString = DateRepetitionInterpeter::convertDateRepetitionToString($hourly);
+        $this->assertEquals('hourly at minute 28', $hourlyString);
+
         $daily = new DailyDateRepetition(14, 28);
         $dailyString = DateRepetitionInterpeter::convertDateRepetitionToString($daily);
         $this->assertEquals('daily at 14:28', $dailyString);

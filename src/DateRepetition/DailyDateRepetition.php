@@ -9,9 +9,8 @@ use InvalidArgumentException;
  * Daily date repetition implements a daterepetition
  * it contains the time of a repetition that should occure daily
  */
-class DailyDateRepetition implements DateRepetition
+class DailyDateRepetition extends HourlyDateRepetition
 {
-	protected $minute;
 	protected $hour;
 
     /**
@@ -22,7 +21,7 @@ class DailyDateRepetition implements DateRepetition
      */
 	public function __construct($hour, $minute)
 	{
-		$this->setMinute($minute);
+        parent::__construct($minute);
 		$this->setHour($hour);
 	}
 
@@ -42,31 +41,6 @@ class DailyDateRepetition implements DateRepetition
 		return new self($dateTime->format('G'), $dateTime->format('i'));
 	}
 	
-    /**
-     * Returns the minutes in repetition
-     *
-     * @return integer minutes
-     */
- 	public function getMinute()
- 	{
- 		return $this->minute;
- 	}
- 
-    /**
-     * Sets minutes in repetition
-     *
-     * @param integer minutes
-     * @return this
-     */   
-  	public function setMinute($minute)
- 	{
-		if(! in_array($minute, range(0, 59))) {
-			throw new InvalidArgumentException('Minute must be between 0 and 59');
-		}
- 		$this->minute = $minute;
-        return $this;
- 	}
- 
     /**
      * Gets hours in repetition
      *

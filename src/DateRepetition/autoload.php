@@ -2,6 +2,7 @@
 
 spl_autoload_register(function ($class) {
 	$availableClasses = array(
+        'DateRepetition\HourlyDateRepetition',
 		'DateRepetition\DailyDateRepetition',
         'DateRepetition\WeeklyDateRepetition',
 		'DateRepetition\DateRepetitionInterpeter',
