@@ -4,6 +4,8 @@ namespace DateRepetition;
 
 use PHPUnit_Framework_TestCase;
 use DateTime;
+use DateInterval;
+use DateRepetition\Fixtures\MockTimeProvider;
 
 class DateRepetitionCalculatorTest extends PHPUnit_Framework_TestCase
 {
@@ -12,20 +14,20 @@ class DateRepetitionCalculatorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testNextOccuranceDaily()
 	{
-        $dateTime = new DateTime('2014-05-14 8:13');
-        $dateRepetitionCalculator = new DateRepetitionCalculator();
-
+        $timeProvider = new MockTimeProvider(new DateTime('2014-05-14 8:11'));
+        $dateRepetitionCalculator = new DateRepetitionCalculator($timeProvider);
         $dateRepetition = new DailyDateRepetition(8, 12);
-        $nextOccurance = $dateRepetitionCalculator->getNextOccurence($dateRepetition, $dateTime);
-        $this->assertEquals(new DateTime('2014-05-15 8:12'), $nextOccurance);
 
-        $dateRepetition = new DailyDateRepetition(8, 14);
-        $nextOccurance = $dateRepetitionCalculator->getNextOccurence($dateRepetition, $dateTime);
-        $this->assertEquals(new DateTime('2014-05-14 8:14'), $nextOccurance);
-        
-        $dateRepetition = new DailyDateRepetition(8, 13);
-        $nextOccurance = $dateRepetitionCalculator->getNextOccurence($dateRepetition, $dateTime);
-        $this->assertEquals(new DateTime('2014-05-14 8:13'), $nextOccurance);		
+        $nextOccurance = $dateRepetitionCalculator->getNextOccurence($dateRepetition);
+        $this->assertEquals(new DateTime('2014-05-14 8:12'), $nextOccurance);
+
+        $timeProvider->wait(new DateInterval('PT1M'));
+        $nextOccurance = $dateRepetitionCalculator->getNextOccurence($dateRepetition);
+        $this->assertEquals(new DateTime('2014-05-14 8:12'), $nextOccurance);
+       
+        $timeProvider->wait(new DateInterval('PT1M')); 
+        $nextOccurance = $dateRepetitionCalculator->getNextOccurence($dateRepetition);
+        $this->assertEquals(new DateTime('2014-05-15 8:12'), $nextOccurance);		
     }
 
     /**
@@ -33,20 +35,20 @@ class DateRepetitionCalculatorTest extends PHPUnit_Framework_TestCase
      */
     public function testPreviousOccuranceDaily()
     {
-        $dateTime = new DateTime('2014-05-14 8:13');
-        $dateRepetitionCalculator = new DateRepetitionCalculator();
-
+        $timeProvider = new MockTimeProvider(new DateTime('2014-05-14 8:11'));
+        $dateRepetitionCalculator = new DateRepetitionCalculator($timeProvider);
         $dateRepetition = new DailyDateRepetition(8, 12);
-        $nextOccurance = $dateRepetitionCalculator->getPreviousOccurence($dateRepetition, $dateTime);
-        $this->assertEquals(new DateTime('2014-05-14 8:12'), $nextOccurance);
 
-        $dateRepetition = new DailyDateRepetition(8, 14);
-        $nextOccurance = $dateRepetitionCalculator->getPreviousOccurence($dateRepetition, $dateTime);
-        $this->assertEquals(new DateTime('2014-05-13 8:14'), $nextOccurance);
+        $prevOccurance = $dateRepetitionCalculator->getPreviousOccurence($dateRepetition);
+        $this->assertEquals(new DateTime('2014-05-13 8:12'), $prevOccurance);
+
+        $timeProvider->wait(new DateInterval('PT1M'));
+        $prevOccurance = $dateRepetitionCalculator->getPreviousOccurence($dateRepetition);
+        $this->assertEquals(new DateTime('2014-05-13 8:12'), $prevOccurance);
         
-        $dateRepetition = new DailyDateRepetition(8, 13);
-        $nextOccurance = $dateRepetitionCalculator->getPreviousOccurence($dateRepetition, $dateTime);
-        $this->assertEquals(new DateTime('2014-05-13 8:13'), $nextOccurance);
+        $timeProvider->wait(new DateInterval('PT1M'));
+        $prevOccurance = $dateRepetitionCalculator->getPreviousOccurence($dateRepetition);
+        $this->assertEquals(new DateTime('2014-05-14 8:12'), $prevOccurance);
     }
 
     /**
@@ -54,16 +56,15 @@ class DateRepetitionCalculatorTest extends PHPUnit_Framework_TestCase
      */
     public function testNearestOccuranceDaily()
     {
-
+        $timeProvider = new MockTimeProvider(new DateTime('2014-05-14 8:11'));
+        $dateRepetitionCalculator = new DateRepetitionCalculator($timeProvider);
         $dateRepetition = new DailyDateRepetition(11, 15);
-        $dateRepetitionCalculator = new DateRepetitionCalculator();
 
-        $dateTime = new DateTime('2014-05-14 23:14');
-        $nearestOccurence = $dateRepetitionCalculator->getNearestOccurence($dateRepetition, $dateTime);
+        $nearestOccurence = $dateRepetitionCalculator->getNearestOccurence($dateRepetition);
         $this->assertEquals(new DateTime('2014-05-14 11:15'), $nearestOccurence);
 
-        $dateTime = new DateTime('2014-05-13 23:16');
-        $nearestOccurence = $dateRepetitionCalculator->getNearestOccurence($dateRepetition, $dateTime);
+        $timeProvider->wait(new DateInterval('PT4H'));
+        $nearestOccurence = $dateRepetitionCalculator->getNearestOccurence($dateRepetition);
         $this->assertEquals(new DateTime('2014-05-14 11:15'), $nearestOccurence);
     }
 }

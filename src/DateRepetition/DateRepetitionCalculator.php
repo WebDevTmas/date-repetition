@@ -4,15 +4,32 @@ namespace DateRepetition;
 
 use DateTime;
 
+/**
+ * DateRepetitionCalculator offers functionality to find occurences of a date repetition
+ *
+ * @todo implement yearly, monthly and hourly
+ */
 class DateRepetitionCalculator
 {
     protected $timeProvider;
 
-    public function __contruct(TimeProvider $timeProvider)
+    /** 
+     * Accepts timeprovider and uses it for the calculations for a better testability
+     *
+     * @param TimeProvider
+     */
+    public function __construct(TimeProvider $timeProvider)
     {
         $this->timeProvider = $timeProvider;
     }
 
+    /** 
+     * Find next occurence of date repetition
+     *
+     * @param DateRepetition 
+     * @param DateTime next occurence from this date (null == now)
+     * @return DateTime date/time of next occurence
+     */
     public function getNextOccurence(DateRepetition $dateRepetition, DateTime $datetime = null)
     {
         if(null === $datetime) {
@@ -30,6 +47,11 @@ class DateRepetitionCalculator
         return new \Exception('Not yet implemented');
     }
 
+    /**
+     * @param DateRepetition
+     * @param DateTime previous occurence from this date (null == now)
+     * @return DateTime date/time of previous occurence
+     */
     public function getPreviousOccurence(DateRepetition $dateRepetition, DateTime $datetime = null)
     {
         if(null === $datetime) {
@@ -47,6 +69,11 @@ class DateRepetitionCalculator
         return new \Exception('Not yet implemented');
    }
 
+   /**
+    * @param DateRepetition
+    * @param DateTime date/time nearest occurence that's returned from this date (null == now)
+    * @return DateTime date/time of nearest occurence (before or after)
+    */
    public function getNearestOccurence(DateRepetition $dateRepetition, DateTime $datetime = null)
    {
         if(null === $datetime) {

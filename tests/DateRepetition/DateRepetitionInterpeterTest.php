@@ -43,4 +43,18 @@ class DateRepetitionInterpeterTest extends PHPUnit_Framework_TestCase
     {
         $dateRepetition = DateRepetitionInterpeter::newDateRepetitionFromString('invalidly at unknown');
     }
+
+    /**
+     * @test
+     */
+    public function testConverDateRepetitionToString()
+    {
+        $daily = new DailyDateRepetition(14, 28);
+        $dailyString = DateRepetitionInterpeter::convertDateRepetitionToString($daily);
+        $this->assertEquals('daily at 14:28', $dailyString);
+
+        $weekly = new WeeklyDateRepetition(WeeklyDateRepetition::WEDNESDAY, 14, 28);
+        $weeklyString = DateRepetitionInterpeter::convertDateRepetitionToString($weekly);
+        $this->assertEquals('weekly on wednesday at 14:28', $weeklyString);
+    }
 }

@@ -4,6 +4,7 @@ namespace DateRepetition\Fixtures;
 
 use DateRepetition\TimeProvider;
 use DateTime;
+use DateInterval;
 
 class MockTimeProvider extends TimeProvider 
 {
